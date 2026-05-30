@@ -1,121 +1,84 @@
-import math
+def convert_units(value, current_unit, units_dict):
 
-def convert_units(units):
+    base_value = value * units_dict[current_unit]
 
-    while True:
-        try:
-            value = float(input("\nEnter value: "))
-            break
-        except ValueError:
-            print("Please enter a valid number.")
+    converted_results = {}
+    for target_unit, target_factor in units_dict.items():
+        converted_results[target_unit] = base_value / target_factor
 
-    print("\nAvailable units:")
+    return converted_results
 
-    for u in units:
-        print(f"[{u}]")
-
-    while True:
-
-        unit = input("\nEnter unit: ").lower()
-
-        if unit in units:
-            break
-
-        print("Invalid unit.")
-
-    base_value = value * units[unit]
-
-    print("\nConversions:")
-
-    for name, factor in units.items():
-        converted = base_value / factor
-        print(f"{name}: {converted:.4f}")
-
-
-def length_converter():
+def length_converter(value, current_unit):
     units = {
         "mm": 0.001,
         "cm": 0.01,
-        "m": 1,
-        "km": 1000,
+        "m": 1.0,
+        "km": 1000.0,
         "mi": 1609.34,
         "yd": 0.9144,
         "ft": 0.3048,
         "inch": 0.0254
     }
+    return convert_units(value, current_unit, units)
 
-    convert_units(units)
-
-def mass_converter():
+def mass_converter(value, current_unit):
     units = {
         "mg": 0.001,
-        "g": 1,
-        "kg": 1000,
-        "t": 1000000,
+        "g": 1.0,
+        "kg": 1000.0,
+        "t": 1000000.0,
         "oz": 28.3495,
         "lb": 453.592,
         "st": 6350.29
     }
+    return convert_units(value, current_unit, units)
 
-    convert_units(units)
-
-def speed_converter():
+def speed_converter(value, current_unit):
     units = {
+        "m/s": 1.0,
         "ft/s": 0.3048,
-        "m/s": 1,
         "mi/h": 0.44704,
-        "km/h": 0.277778,
+        "km/h": 0.277778
     }
+    return convert_units(value, current_unit, units)
 
-    convert_units(units)
-
-def temp_converter():
-    value = float(input("Enter temperature value: "))
-    unit = input("Enter unit (c, f, k): ").lower()
-
-    if unit == "c":
-        celsius = value
-    elif unit == "f":
-        celsius = (value - 32) * 5/9
-    elif unit == "k":
-        celsius = value - 273.15
-    else:
-        print("Invalid unit.")
-        return
-
-    print("\nConversions:")
-
-    print(f"c: {celsius:.2f}")
-
-    fahrenheit = (celsius * 9/5) + 32
-    print(f"f: {fahrenheit:.2f}")
-
-    kelvin = celsius + 273.15
-    print(f"k: {kelvin:.2f}")
-
-def time_converter():
+def time_converter(value, current_unit):
     units = {
-        "sec" : 1/3600,
-        "min" : 1/60,
-        "hr" : 1,
-        "day" : 24,
-        "week" : 168,
-        "month" : 730,
-        "year" : 8760
+        "sec": 1.0,
+        "min": 60.0,
+        "hr": 3600.0,
+        "day": 86400.0,
+        "week": 604800.0,
+        "month": 2628000.0,
+        "year": 31536000.0
     }
+    return convert_units(value, current_unit, units)
 
-    convert_units(units)
-
-def volume_converter():
+def volume_converter(value, current_unit):
     units = {
         "ml": 0.001,
         "cl": 0.01,
         "dl": 0.1,
-        "l": 1,
-        "m3": 1000,
+        "l": 1.0,
+        "m3": 1000.0,
         "cm3": 0.001,
         "in3": 0.0163871,
         "ft3": 28.3168
     }
+    return convert_units(value, current_unit, units)
 
-    convert_units(units)
+def temp_converter(value, current_unit):
+    if current_unit == "c":
+        celsius = value
+    elif current_unit == "f":
+        celsius = (value - 32) * 5 / 9
+    elif current_unit == "k":
+        celsius = value - 273.15
+    else:
+        return {}
+
+    return {
+        "c": celsius,
+        "f": (celsius * 9 / 5) + 32,
+        "k": celsius + 273.15
+    }
