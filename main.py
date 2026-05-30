@@ -3,14 +3,14 @@ import area
 import conversion
 
 def main():
-    print("\nWelcome to Python Area Calculator and Unit Converter")
+    print("\n=====[WELCOME TO PYTHON AREA CALCULATOR AND UNIT CONVERTER]=====")
 
     while True:
 
         option = input("\n[1] Area Calculator\n[2] Unit Converter\n[0] Exit\n:")
 
         if option == "1":
-            print("\nArea Calculator")
+            print("\n=====[Area Calculator]=====\n")
 
             while True:
                 shape = input(
@@ -51,7 +51,7 @@ def main():
                         print("\nInvalid option.\n")
 
         elif option == "2":
-            print("\nUnit Converter")
+            print("\n=====[Unit Converter]=====\n")
 
             while True:
                 unit = input(
