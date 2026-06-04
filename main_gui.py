@@ -1,37 +1,44 @@
 import tkinter as tk
 from tkinter import ttk
 import area
+import conversion
 
 
 def change_button_area():
     title.config(text="Area Calculator")
     shape_frame.pack(fill="x", pady=(0, 30))
-    update_inputs(None)
+    update_area_inputs(None)
+    type_frame.pack_forget()
 
 
 def change_button_unit():
     title.config(text="Unit Converter")
     shape_frame.pack_forget()
-    hide_input()
-    result_label.config(text="Unit Converter Mode Active", fg="#E2E8F0")
+    hide_area_input()
+    type_frame.pack(fill="x", pady=(0, 30))
 
 
-def hide_input():
+def hide_area_input():
     input1_frame.pack_forget()
     input2_frame.pack_forget()
     input3_frame.pack_forget()
     action_frame.pack_forget()
 
 
-def update_inputs(event):
-    hide_input()
+def update_area_inputs(event):
+    hide_area_input()
     chosen = shape.get()
 
     match chosen:
         case "Square":
             label1.config(text="Side:")
             input1_frame.pack(fill="x", pady=(0, 10))
-        case "Parallelogram" | "Rectangle" | "Triangle":
+        case "Rectangle":
+            label1.config(text="Length:")
+            label2.config(text="Width:")
+            input1_frame.pack(fill="x", pady=(0, 10))
+            input2_frame.pack(fill="x", pady=(0, 10))
+        case "Parallelogram" | "Triangle":
             label1.config(text="Base:")
             label2.config(text="Height:")
             input1_frame.pack(fill="x", pady=(0, 10))
@@ -85,6 +92,9 @@ def run_calculation():
         result_label.config(text=f"Area = {result}", fg="#00FF00")
     except ValueError:
         result_label.config(text="Invalid inputs!", fg="#FF3333")
+
+def update_converter_inputs(event):
+    chosen = type.get()
 
 
 window = tk.Tk()
@@ -153,7 +163,7 @@ shape = ttk.Combobox(
 )
 shape.pack(side="left")
 shape.set("Square")
-shape.bind("<<ComboboxSelected>>", update_inputs)
+shape.bind("<<ComboboxSelected>>", update_area_inputs)
 
 input1_frame = tk.Frame(window, bg="#1A1A24")
 label1 = tk.Label(
@@ -220,6 +230,30 @@ result_label = tk.Label(
 )
 result_label.pack(pady=20)
 
-update_inputs(None)
+update_area_inputs(None)
+
+type_frame = tk.Frame(
+    window,
+    bg="#1A1A24"
+)
+
+type_label = tk.Label(
+    type_frame,
+    text="Type:",
+    font=("Courier New", 13, "bold"),
+    bg="#1A1A24",
+    fg="#E2E8F0",
+    width=8,
+    anchor="w"
+)
+type_label.pack(side="left", padx=(35, 10))
+
+type = ttk.Combobox(
+    type_frame,
+    values=["Length", "Mass", "Speed", "Time", "Volume", "Temperature"],
+    state="readonly"
+)
+type.pack(side="left")
+type.set("Length")
 
 window.mainloop()
