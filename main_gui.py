@@ -9,6 +9,7 @@ def change_button_area():
     shape_frame.pack(fill="x", pady=(0, 30))
     update_area_inputs(None)
     type_frame.pack_forget()
+    unit_frame.pack_forget()
 
 
 def change_button_unit():
@@ -16,6 +17,7 @@ def change_button_unit():
     shape_frame.pack_forget()
     hide_area_input()
     type_frame.pack(fill="x", pady=(0, 30))
+    unit_frame.pack(fill="x", pady=(0, 30))
 
 
 def hide_area_input():
@@ -93,8 +95,29 @@ def run_calculation():
     except ValueError:
         result_label.config(text="Invalid inputs!", fg="#FF3333")
 
-def update_converter_inputs(event):
-    chosen = type.get()
+
+def run_conversion(event):
+    try:
+        chosen2 = type_dropdown.get()
+
+        match chosen2:
+            case "Length":
+                unit_values = ["mm", "cm", "m", "km", "mi", "yd", "ft", "inch"]
+            case "Mass":
+                unit_values = ["mg", "g", "kg", "t", "oz", "lb", "st"]
+            case "Speed":
+                unit_values = ["m/s", "ft/s", "mi/h", "km/h"]
+            case "Time":
+                unit_values = ["sec", "min", "hr", "day", "week", "month", "year"]
+            case "Volume":
+                unit_values = ["ml", "cl", "dl", "l", "m3", "cm3", "in3", "ft3"]
+            case "Temperature":
+                unit_values = ["c", "f", "k"]
+            case _:
+                unit_values = []
+        unit["values"] = unit_values
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 window = tk.Tk()
@@ -248,12 +271,36 @@ type_label = tk.Label(
 )
 type_label.pack(side="left", padx=(35, 10))
 
-type = ttk.Combobox(
+type_dropdown = ttk.Combobox(
     type_frame,
     values=["Length", "Mass", "Speed", "Time", "Volume", "Temperature"],
     state="readonly"
 )
-type.pack(side="left")
-type.set("Length")
+type_dropdown.pack(side="left")
+type_dropdown.set("Length")
+type_dropdown.bind("<<ComboboxSelected>>", run_conversion)
+
+unit_frame = tk.Frame(
+    window,
+    bg="#1A1A24"
+)
+
+unit_label = tk.Label(
+    unit_frame,
+    text="Unit:",
+    font=("Courier New", 13, "bold"),
+    bg="#1A1A24",
+    fg="#E2E8F0",
+    width=8,
+    anchor="w"
+)
+unit_label.pack(side="left", padx=(35, 10))
+
+unit = ttk.Combobox(
+    unit_frame,
+    state="readonly"
+)
+unit.pack(side="left")
+
 
 window.mainloop()
