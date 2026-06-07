@@ -10,6 +10,7 @@ def change_button_area():
     update_area_inputs(None)
     type_frame.pack_forget()
     unit_frame.pack_forget()
+    value_frame.pack_forget()
 
 
 def change_button_unit():
@@ -18,6 +19,8 @@ def change_button_unit():
     hide_area_input()
     type_frame.pack(fill="x", pady=(0, 30))
     unit_frame.pack(fill="x", pady=(0, 30))
+    value_frame.pack(fill="x", pady=(0, 10))
+    update_conversion_inputs(None)
 
 
 def hide_area_input():
@@ -57,6 +60,9 @@ def update_area_inputs(event):
             input3_frame.pack(fill="x", pady=(0, 10))
 
     action_frame.pack(fill="x", pady=(15, 0))
+    calc_button.config(
+        text="Calculate",
+    )
     input1.delete(0, tk.END)
     input2.delete(0, tk.END)
     input3.delete(0, tk.END)
@@ -95,8 +101,7 @@ def run_calculation():
     except ValueError:
         result_label.config(text="Invalid inputs!", fg="#FF3333")
 
-
-def run_conversion(event):
+def update_conversion_inputs(event):
     try:
         chosen2 = type_dropdown.get()
 
@@ -118,6 +123,12 @@ def run_conversion(event):
         unit["values"] = unit_values
     except Exception as e:
         print(f"An error occurred: {e}")
+
+    action_frame.pack(fill="x", pady=(15, 0))
+    calc_button.config(
+        text="Convert all",
+    )
+
 
 
 window = tk.Tk()
@@ -278,7 +289,7 @@ type_dropdown = ttk.Combobox(
 )
 type_dropdown.pack(side="left")
 type_dropdown.set("Length")
-type_dropdown.bind("<<ComboboxSelected>>", run_conversion)
+type_dropdown.bind("<<ComboboxSelected>>", update_conversion_inputs)
 
 unit_frame = tk.Frame(
     window,
@@ -301,6 +312,28 @@ unit = ttk.Combobox(
     state="readonly"
 )
 unit.pack(side="left")
+
+value_frame = tk.Frame(
+    window,
+    bg="#1A1A24"
+)
+
+value_label = tk.Label(
+    value_frame,
+    text="Value:",
+    font=("Courier New", 13, "bold"),
+    bg="#1A1A24",
+    fg="#E2E8F0",
+    width=8,
+    anchor="w"
+)
+value_label.pack(side="left", padx=(35, 10))
+
+value = tk.Entry(
+    value_frame,
+    width=20
+)
+value.pack(side="left")
 
 
 window.mainloop()
