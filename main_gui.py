@@ -11,6 +11,7 @@ def change_button_area():
     type_frame.pack_forget()
     unit_frame.pack_forget()
     value_frame.pack_forget()
+    result_label.config(text="")
 
 
 def change_button_unit():
@@ -21,6 +22,7 @@ def change_button_unit():
     unit_frame.pack(fill="x", pady=(0, 30))
     value_frame.pack(fill="x", pady=(0, 10))
     update_conversion_inputs(None)
+    result_label.config(text="")
 
 
 def hide_area_input():
@@ -62,10 +64,12 @@ def update_area_inputs(event):
     action_frame.pack(fill="x", pady=(15, 0))
     calc_button.config(
         text="Calculate",
+        command=run_calculation
     )
     input1.delete(0, tk.END)
     input2.delete(0, tk.END)
     input3.delete(0, tk.END)
+    value.delete(0, tk.END)
     result_label.config(text="")
 
 
@@ -121,20 +125,54 @@ def update_conversion_inputs(event):
             case _:
                 unit_values = []
         unit["values"] = unit_values
+        unit.set(unit_values[0])
     except Exception as e:
         print(f"An error occurred: {e}")
 
     action_frame.pack(fill="x", pady=(15, 0))
     calc_button.config(
         text="Convert all",
+        command=run_conversion
     )
+
+def run_conversion():
+    try:
+        chosen = type_dropdown.get()
+        v1 = float(value.get())
+        current_unit = unit.get()
+
+        match chosen:
+            case "Length":
+                result = conversion.length_converter(v1, current_unit)
+            case "Mass":
+                result = conversion.mass_converter(v1, current_unit)
+            case "Speed":
+                result = conversion.speed_converter(v1, current_unit)
+            case "Time":
+                result = conversion.time_converter(v1, current_unit)
+            case "Volume":
+                result = conversion.volume_converter(v1, current_unit)
+            case "Temperature":
+                result = conversion.temp_converter(v1, current_unit)
+
+        result_text = ""
+        for u, val in result.items():
+            result_text += f"{round(val, 2)} {u}\n"
+        result_label.config(
+            text=result_text,
+            fg="#00FF00",
+        )
+
+    except Exception as e:
+        result_label.config(text="Invalid inputs!", fg="#FF3333")
+
 
 
 
 window = tk.Tk()
 window.title("Area and Conversion Calculator")
 window.config(bg="#1A1A24")
-window.geometry("350x500")
+window.geometry("350x600")
 window.resizable(False, False)
 
 try:
@@ -258,13 +296,11 @@ calc_button.pack(pady=(10, 5))
 result_label = tk.Label(
     action_frame,
     text="",
-    font=("Courier New", 15, "bold"),
+    font=("Courier New", 13, "bold"),
     bg="#1A1A24",
     fg="#00FF00"
 )
 result_label.pack(pady=20)
-
-update_area_inputs(None)
 
 type_frame = tk.Frame(
     window,
@@ -335,5 +371,6 @@ value = tk.Entry(
 )
 value.pack(side="left")
 
+update_area_inputs(None)
 
 window.mainloop()
