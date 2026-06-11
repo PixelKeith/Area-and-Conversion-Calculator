@@ -14,7 +14,18 @@ This is my first desktop GUI application built using Python and Tkinter! It is a
 
 ## 📸 Preview
 
-![Area Calculator](assets/app_preview1.png?raw=true)![Unit Converter](assets/app_preview2.png?raw=true)
+<table border="0">
+  <tr>
+    <td>
+      <p align="center"><b>Area Calculator</b></p>
+      <img src="assets/app_preview1.png" width="350" alt="Area Calculator Tab">
+    </td>
+    <td>
+      <p align="center"><b>Unit Converter</b></p>
+      <img src="assets/app_preview2.png" width="350" alt="Unit Converter Tab">
+    </td>
+  </tr>
+</table>
 
 ---
 
