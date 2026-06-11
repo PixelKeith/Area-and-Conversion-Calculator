@@ -14,7 +14,7 @@ This is my first desktop GUI application built using Python and Tkinter! It is a
 
 ## 📸 Preview
 
-![App Preview](assets/screenshot.png)
+![App Preview](assets/app_preview1.png)
 
 ---
 
